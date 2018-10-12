@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
 const Beer = require('../models/Beer')
 
-module.exports = app => {
 
+module.exports = app => {
+ //All the beers
   app.get('/beers/all', async (req, res) => {
     try{
       const Beers = await Beer.find()
@@ -11,26 +12,28 @@ module.exports = app => {
       res.status(404).json({error: 'No Beers found, try with a little vodka'})
     }
   })
-
-  app.get('/beers/single/:id', async (req, res) => {
+ //One single Beer
+  app.get('/beers/single/:id', async (req, res) => { //({_id: req.params.id})
     try{
-      const SeachedBeer = await Beer.findOne({_id: req.params.id})
+      const SeachedBeer = await Beer.findById(req.params.id)
       res.status(200).json(SeachedBeer)
+      console.log(SeachedBeer);
     }catch(err){
       res.status(404).json({error: 'not beer found'})
     }
   })
-
+ //Random Beer
   app.get('/beers/random/', async (req, res) => { 
     try{
       const Beers = await Beer.find()
       const selected = Math.floor(Math.random() * Beers.length) + 1
       res.status(200).json(Beers[selected])
+      console.log(Beers[selected]);
     }catch(err){
       res.status(404).json({error: 'not beer found'})
     }
   })
-
+ //ADD a new beer
   app.post('/beers/new', async (req, res) => {
     const {
       id,
@@ -48,7 +51,7 @@ module.exports = app => {
       res.status(500).json({error: 'error creating beer'})
     }
   })
-
+ //FInd a beer 
   app.get('/beers/search', async (req, res) => {
     
     try{

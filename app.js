@@ -5,11 +5,13 @@ const logger       = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
 const mongoose     = require('mongoose')
+const cors         = require('cors');
 
-mongoose.connect('mongodb://localhost:27017/beers-api', {useNewUrlParser: true})
+mongoose.connect('mongodb://localhost/beers-api', {useNewUrlParser: true})
+//:27017
 
 const app = express();
-
+app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -17,7 +19,7 @@ app.set('view engine', 'jade');
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
 
-// uncomment after placing your favicon in /public
+//uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -46,9 +48,11 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+ //const beerRoutes = require('./routes/beerRoutes');
+// const index = require('./routes/index');
+// app.use('/',index);
+ //app.use('/beers',beerRoutes);
 
 const PORT = process.env.PORT || 3000
-
 app.listen(PORT, console.log(`listening on ${PORT}`))
-
 module.exports = app;
